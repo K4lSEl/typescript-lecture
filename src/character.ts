@@ -14,6 +14,9 @@ export abstract class Character {
   //TODO: ダメージを受ける takeDamage メソッドを追加する
   takeDamage(damage: number): void {
     this.hp -= damage;
+    if (this.hp < 0) {
+      this.hp = 0;
+    }
   }
 
   isDead(): boolean {
