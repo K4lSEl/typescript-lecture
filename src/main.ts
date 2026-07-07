@@ -1,12 +1,27 @@
-import { Mage } from "./mage";
+import { Enemy } from "./enemy";
 import { Warrior } from "./warrior";
+import { Archer } from "./archer";
+import { Mage } from "./mage";
 
-// const character = new Character("太郎", 200); // abstract class はインスタンス化出来ないのでエラーが出る
+const slime = new Enemy("スライム", 50, 10);
+const warrior = new Warrior("勇者", 100, "エクスカリバー", 20);
+const archer = new Archer("弓氏", 120, 15, 20);
+const mage = new Mage("魔法使い", 200, 20);
 
-const warrior = new Warrior("アーサー", 100, "エクスカリバー");
-warrior.showStatus();
-warrior.attack();
+while (!warrior.isDead() && !slime.isDead()) {
+  warrior.attack(slime);
+  slime.showStatus();
 
-const mage = new Mage("メディア", 80);
-mage.showStatus();
-mage.attack();
+  if (slime.isDead()) {
+    console.log(`${warrior.getName}を倒した`);
+    break;
+  }
+
+  slime.attack(warrior);
+  warrior.showStatus;
+
+  if (warrior.isDead()) {
+    console.log(`${slime.getName}は倒された`);
+    break;
+  }
+}
