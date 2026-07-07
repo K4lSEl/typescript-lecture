@@ -12,5 +12,6 @@ export class Warrior extends Character {
     console.log(`${this.name}は${this.weapon}で攻撃した！`);
 
     opponent.takeDamage(this.power);
+
   }
 }
