@@ -3,13 +3,11 @@ import { Character } from "./character";
 export class Enemy extends Character {
   //TODO: maxHp プロパティを追加する
   readonly maxHp: number;
-  private power: number;
 
   //TODO: maxHp プロパティの初期化
   constructor(name: string, hp: number, power: number) {
-    super(name, hp);
+    super(name, hp, power);
     this.maxHp = hp;
-    this.power = power;
   }
 
   //TODO: maxHp に対する現在の hp の割合を返す getHpRatio メソッドを追加する

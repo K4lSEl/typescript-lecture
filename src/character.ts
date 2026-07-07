@@ -1,10 +1,12 @@
 export abstract class Character {
   protected name: string; // インスタンスからはアクセス出来ないが、継承先からはアクセスできる
   protected hp: number; // インスタンスからも継承先からもアクセス出来ない
+  protected power: number;
 
-  constructor(name: string, hp: number) {
+  constructor(name: string, hp: number, power: number) {
     this.name = name;
     this.hp = hp;
+    this.power = power;
   }
 
   showStatus() {

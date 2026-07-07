@@ -3,8 +3,8 @@ import { Character } from "./character";
 export class Archer extends Character {
   private arrows: number;
 
-  constructor(name: string, hp: number, arrows: number) {
-    super(name, hp);
+  constructor(name: string, hp: number, power: number, arrows: number) {
+    super(name, hp, power);
     this.arrows = arrows;
   }
 
