@@ -9,6 +9,11 @@ export abstract class Character {
     this.power = power;
   }
 
+  // 名前を返すメソッド
+  getName() {
+    return this.name;
+  }
+
   showStatus() {
     console.log(`${this.name}: HP ${this.hp}`);
   }
@@ -21,9 +26,11 @@ export abstract class Character {
     }
   }
 
+  // HPga０以下かどうか
   isDead(): boolean {
     return this.hp <= 0;
   }
 
+  // 攻撃する相手を引数にとる
   abstract attack(opponent: Character): void;
 }
