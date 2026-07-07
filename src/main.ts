@@ -1,8 +1,12 @@
 import { Enemy } from "./enemy";
 import { Warrior } from "./warrior";
+import { Archer } from "./archer";
+import { Mage } from "./mage";
 
 const slime = new Enemy("スライム", 50, 10);
 const warrior = new Warrior("勇者", 100, "エクスカリバー", 20);
+const archer = new Archer("", 120, 15, 20);
+const mage = new Mage("", 200, 20);
 
 while (!warrior.isDead() && !slime.isDead()) {
   warrior.attack(slime);
