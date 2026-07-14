@@ -1,28 +1,46 @@
 import { Enemy } from "./enemy";
 import { Warrior } from "./warrior";
 // import { Archer } from "./archer";
-// import { Mage } from "./mage";
+import { Mage } from "./mage";
+import type { Character } from "./character";
 // import { HolyPriest } from "./holy-priest";
 
-const slime = new Enemy("スライム", 70, 10, 10);
+const enemy = new Enemy("ドラゴン", 200, 30, 10);
 const warrior = new Warrior("勇者", 100, "エクスカリバー", 20, 20);
 // const archer = new Archer("弓氏", 120, 15, 20);
-// const mage = new Mage("魔法使い", 200, 20);
-// const priest = new HolyPriest("僧侶", 300, 0);
+const mage = new Mage("魔法使い", 80, 20);
+// const holy-priest = new HolyPriest("僧侶", 300, 0);
 
-while (!warrior.isDead() && !slime.isDead()) {
-  warrior.attack(slime);
-  slime.showStatus();
+// パーティ
+const party: Character[] = [warrior, mage];
+let battleOver = false;
 
-  if (slime.isDead()) {
-    console.log(`${warrior.getName()}を倒した`);
+while (true) {
+  for (const member of party) {
+    if (!member.isDead()) {
+      member.attack(enemy);
+    }
+
+    if (enemy.isDead()) {
+      battleOver = true;
+      console.log(`${enemy.getName()}を倒した`);
+      break;
+    }
+  }
+
+  if (battleOver) break;
+
+  // 敵の反撃
+  const aliveParty = party.filter((m) => !m.isDead());
+  enemy.attack(aliveParty[0]);
+
+  if (party.every((m) => m.isDead())) {
+    console.log("パーティは全滅した");
     break;
   }
 
-  slime.attack(warrior);
-  warrior.showStatus();
-
-  if (warrior.isDead()) {
-    console.log(`${warrior.getName()}は倒された`);
+  for (const member of party) {
+    member.showStatus();
   }
+  enemy.showStatus();
 }
