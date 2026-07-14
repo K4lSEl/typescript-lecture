@@ -18,6 +18,10 @@ export abstract class Character {
     console.log(`${this.name}: HP ${this.hp}`);
   }
 
+  takeHeal(amount: number): void {
+    this.hp += amount;
+  }
+
   //TODO: ダメージを受ける takeDamage メソッドを追加する
   takeDamage(damage: number): void {
     this.hp -= damage;

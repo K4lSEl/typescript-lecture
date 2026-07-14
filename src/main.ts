@@ -2,11 +2,13 @@ import { Enemy } from "./enemy";
 import { Warrior } from "./warrior";
 import { Archer } from "./archer";
 import { Mage } from "./mage";
+import { HolyPriest } from "./holy-priest";
 
 const slime = new Enemy("スライム", 50, 10);
 const warrior = new Warrior("勇者", 100, "エクスカリバー", 20);
 const archer = new Archer("弓氏", 120, 15, 20);
 const mage = new Mage("魔法使い", 200, 20);
+const holypriest = new HolyPriest("僧侶", 300, 0);
 
 while (!warrior.isDead() && !slime.isDead()) {
   warrior.attack(slime);
