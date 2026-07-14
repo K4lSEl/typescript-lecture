@@ -15,7 +15,7 @@ export class HolyPriest extends Character implements Healable, Reviveable {
     if (!target.isDead()) {
       target.takeHeal(15);
     } else {
-      console.log(`${this.name}は倒れていて回復できない`);
+      console.log(`${target.getName}は倒れていて回復できない`);
     }
   }
 
@@ -24,7 +24,7 @@ export class HolyPriest extends Character implements Healable, Reviveable {
     if (target.isDead()) {
       target.takeHeal(50);
     } else {
-      console.log(`${this.name}はまだ倒れていない`);
+      console.log(`${target.getName}はまだ倒れていない`);
     }
   }
 }
