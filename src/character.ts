@@ -14,10 +14,12 @@ export abstract class Character {
     return this.name;
   }
 
+  // ステータスを表示
   showStatus() {
     console.log(`${this.name}: HP ${this.hp}`);
   }
 
+  // 回復させる
   takeHeal(amount: number): void {
     this.hp += amount;
   }
