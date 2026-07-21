@@ -8,7 +8,7 @@ import type { Character } from "./character";
 const enemy = new Enemy("ドラゴン", 200, 30, 10);
 const warrior = new Warrior("勇者", 100, "エクスカリバー", 20, 20);
 // const archer = new Archer("弓氏", 120, 15, 20);
-const mage = new Mage("魔法使い", 80, 20);
+const mage = new Mage("魔法使い", 80, 20, 100);
 // const holy-priest = new HolyPriest("僧侶", 300, 0);
 
 // パーティ
