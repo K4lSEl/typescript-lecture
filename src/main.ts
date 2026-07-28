@@ -1,37 +1,37 @@
-// Map
-const userAges = new Map<string, number>();
-
-userAges.set("Alice", 25);
-userAges.set("Bob", 18);
-userAges.set("Pop", 20);
-
-userAges.get("Alice");
-
-for (const [name, age] of userAges) {
-  console.log(`${name} (${age})`);
+class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValidationError";
+  }
 }
 
-// Set
-const uniqueNumbers = new Set<number>();
+// 奥のロジック：不正ならガード節で早めにthrow
+function registerUser(nameInput: string, emailInput: string): void {
+  const name = nameInput.trim();
+  if (name.length === 0) {
+    throw new ValidationError("名前を入力してください。");
+  }
 
-uniqueNumbers.add(1);
-uniqueNumbers.add(2);
-uniqueNumbers.add(3);
-uniqueNumbers.add(4);
-uniqueNumbers.delete(4);
+  const email = emailInput.trim();
+  // TODO(Step 1): メールアドレスの形式チェックをここに追加する
 
-console.log(uniqueNumbers);
-
-for (const num of uniqueNumbers) {
-  console.log(num);
+  console.log(`登録しました: ${name} <${email}>`);
 }
 
-// RegExp
-function isValidEmail(email: string): boolean {
-  // ここにコードを追加
-  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return pattern.test(email);
+// 画面に近い側：catchしてユーザーに伝える
+function onSubmit(nameInput: string, emailInput: string): void {
+  try {
+    registerUser(nameInput, emailInput);
+  } catch (error: unknown) {
+    if (error instanceof ValidationError) {
+      console.error(`⚠️ ${error.message}`);
+    } else {
+      console.error("想定外のエラーが発生しました。", error);
+    }
+  }
 }
 
-console.log(isValidEmail("test@example.com")); // true
-console.log(isValidEmail("invalid-email")); // false
+onSubmit("Alice", "alice@example.com");
+onSubmit("Bob", "invalid-email");
+onSubmit("", "carol@example.com");
+onSubmit("Charlie", "alice@example.com");
