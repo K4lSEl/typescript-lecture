@@ -51,9 +51,9 @@ async function registerUser(
 }
 
 // 画面に近い側：catchしてユーザーに伝える
-function onSubmit(nameInput: string, emailInput: string): void {
+async function onSubmit(nameInput: string, emailInput: string): Promise<void> {
   try {
-    registerUser(nameInput, emailInput);
+    await registerUser(nameInput, emailInput);
   } catch (error: unknown) {
     if (error instanceof ValidationError) {
       console.error(`⚠️ ${error.message} `);
