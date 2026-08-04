@@ -1,84 +1,75 @@
-function fetchNumber(): Promise<number> {
-  // TODO: 1秒後に 42 を resolve する Promise を返す
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(42);
-      reject();
-    }, 1000);
-  });
-}
-
-// TODO: fetchNumber() を呼び、.then で受け取って表示する
-fetchNumber()
-  .then((data) => console.log(data))
-  .catch((error) => console.error(error));
-
-console.log("待機中に別の処理が出来ます");
-
-// 成功か失敗かを、引数で切り替えられるようにする
-function fetchUserData(shouldFail: boolean): Promise<string> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      // TODO 1: shouldFail が true なら reject、false なら resolve
-      if (shouldFail == false) {
-        resolve("OK");
-      } else {
-        reject("サーバーエラー");
-      }
-    }, 1000);
-  });
-}
-
-// TODO 2: async を付ける
-async function main(shouldFail: boolean): Promise<void> {
-  // TODO 3: try-catch の中で await する
-  try {
-    //   成功 → 受け取った文字列を表示
-    const data = await fetchUserData(shouldFail);
-    console.log(data);
-  } catch (error) {
-    //   失敗 → `NG: ${error}` の形で表示
-    console.log(`NG: ${error}`);
+class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValidationError";
   }
 }
 
-main(false); // 成功パターン
-main(true); // 失敗パターン
+const API = "https://long-graphical-warrant-fairfield.trycloudflare.com/";
 
-async function task1(): Promise<string> {
-  // 0.5秒後に A を返す
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("A");
-    }, 500);
-  });
+async function getReceiptData(): Promise<string> {
+  const response = await fetch(API);
+  const data = await response.json();
+  console.log(data);
+  return data.id;
 }
 
-async function task2(): Promise<string> {
-  // 0.5秒後に B を返す
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("B");
-    }, 500);
-  });
+getReceiptData();
+
+const registeredEmails = new Set<string>();
+const userDirectory = new Map<string, string>();
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-async function task3(): Promise<string> {
-  // 0.5秒後に C を返す
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("C");
-    }, 500);
-  });
+// 奥のロジック：不正ならガード節で早めにthrow
+function registerUser(nameInput: string, emailInput: string): void {
+  const name = nameInput.trim();
+  if (name.length === 0) {
+    throw new ValidationError("名前を入力してください。");
+  }
+
+  const email = emailInput.trim();
+  if (!isValidEmail(email)) {
+    throw new ValidationError("有効なメールアドレスを入力してください。");
+  }
+
+  if (registeredEmails.has(email)) {
+    throw new ValidationError("このメールアドレスは既に登録されています。");
+  }
+
+  registeredEmails.add(email);
+  userDirectory.set(email, name);
+
+  const registeredDate = new Date();
+  console.log(
+    `登録しました: ${name} <${email}> (${registeredDate.toISOString()})`,
+  );
 }
 
-async function runTasksInOrder(): Promise<void> {
-  // task1 -> task2 -> task3 の順で実行する
-  const a = await task1();
-  const b = await task2();
-  const c = await task3();
-  // それぞれの結果を連結し、 A-B-C というログを出力する
-  console.log(`${a}-${b}-${c}`);
+// 画面に近い側：catchしてユーザーに伝える
+function onSubmit(nameInput: string, emailInput: string): void {
+  try {
+    registerUser(nameInput, emailInput);
+  } catch (error: unknown) {
+    if (error instanceof ValidationError) {
+      console.error(`⚠️ ${error.message} `);
+    } else {
+      console.error("想定外のエラーが発生しました。", error);
+    }
+  }
 }
 
-runTasksInOrder();
+onSubmit("Aoice", "alice@example.com");
+onSubmit("Bob", "invalid-email");
+onSubmit("", "carol@example.com");
+onSubmit("Charlie", "alice@example.com");
+onSubmit("Taro", "taro@example.com");
+onSubmit("Hanako", "hanako@example.com");
+
+console.log("登録者一覧");
+for (const [email, name] of userDirectory) {
+  console.log(`${name} <${email} > `);
+}
+console.log(`合計人数: ${userDirectory.size} 人`);
