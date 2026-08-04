@@ -14,7 +14,7 @@ async function getReceiptData(): Promise<string> {
   return data.id;
 }
 
-getReceiptData();
+// getReceiptData();
 
 const registeredEmails = new Set<string>();
 const userDirectory = new Map<string, string>();
@@ -24,7 +24,10 @@ function isValidEmail(email: string): boolean {
 }
 
 // 奥のロジック：不正ならガード節で早めにthrow
-function registerUser(nameInput: string, emailInput: string): void {
+async function registerUser(
+  nameInput: string,
+  emailInput: string,
+): Promise<void> {
   const name = nameInput.trim();
   if (name.length === 0) {
     throw new ValidationError("名前を入力してください。");
@@ -42,10 +45,9 @@ function registerUser(nameInput: string, emailInput: string): void {
   registeredEmails.add(email);
   userDirectory.set(email, name);
 
-  const registeredDate = new Date();
-  console.log(
-    `登録しました: ${name} <${email}> (${registeredDate.toISOString()})`,
-  );
+  // 登録番号を返す関数
+  const receiptNumber = await getReceiptData();
+  console.log(`登録しました: ${name} <${email}> (${receiptNumber})`);
 }
 
 // 画面に近い側：catchしてユーザーに伝える
